@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="A simple Node.js and Tailwind CSS demo app." />
+    <title>Node Canvas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/styles.css" />
+    <style>
+      body { font-family: 'DM Sans', sans-serif; }
+      h1, h2, h3 { font-family: 'Space Grotesk', sans-serif; }
+    </style>
+  </head>
+  <body class="min-h-screen bg-[#f5f4ef] text-[#18221d]">
+    <main class="mx-auto flex min-h-screen max-w-6xl flex-col px-6 py-6 sm:px-10 lg:px-14">
+      <nav class="flex items-center justify-between border-b border-[#18221d]/15 pb-5">
+        <a href="/" class="flex items-center gap-3 text-sm font-bold tracking-tight">
+          <span class="grid h-9 w-9 place-items-center rounded-full bg-[#d7f45b] text-[#18221d]">N</span>
+          NODE CANVAS
+        </a>
+        <span class="hidden text-xs font-bold uppercase tracking-[0.24em] text-[#18221d]/55 sm:block">Express + Tailwind</span>
+      </nav>
+
+      <section class="grid flex-1 items-center gap-14 py-16 lg:grid-cols-[1.15fr_0.85fr] lg:py-24">
+        <div>
+          <p class="mb-7 flex items-center gap-3 text-xs font-bold uppercase tracking-[0.24em] text-[#de5d3a]"><span class="h-2 w-2 rounded-full bg-[#de5d3a]"></span> Local server, ready</p>
+          <h1 class="max-w-3xl text-5xl font-bold leading-[0.98] tracking-[-0.05em] sm:text-7xl">A small app with room to grow.</h1>
+          <p class="mt-8 max-w-xl text-lg leading-8 text-[#18221d]/65">A clean starting point for experimenting with Node.js, APIs, and a Tailwind-powered interface.</p>
+          <div class="mt-10 flex flex-wrap gap-3">
+            <a href="/api/status" class="rounded-full bg-[#18221d] px-6 py-3 text-sm font-bold text-[#f5f4ef] transition hover:bg-[#de5d3a]">View API status <span aria-hidden="true">&#8599;</span></a>
+            <button id="check-button" class="rounded-full border border-[#18221d]/20 px-6 py-3 text-sm font-bold transition hover:border-[#18221d] hover:bg-white">Check connection</button>
+          </div>
+          <p id="status-message" class="mt-4 min-h-5 text-sm text-[#18221d]/60" aria-live="polite"></p>
+        </div>
+
+        <div class="relative">
+          <div class="absolute -inset-5 -z-10 rounded-[2rem] bg-[#d7f45b]"></div>
+          <div class="rounded-[1.5rem] border border-[#18221d]/15 bg-[#fffefa] p-6 shadow-[10px_10px_0_#18221d] sm:p-8">
+            <div class="flex items-center justify-between border-b border-[#18221d]/10 pb-5">
+              <span class="text-sm font-bold">Project pulse</span>
+              <span class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#23835a]"><span class="h-2 w-2 rounded-full bg-[#23835a]"></span> Online</span>
+            </div>
+            <div class="py-10">
+              <p class="text-sm text-[#18221d]/55">Built for</p>
+              <p class="mt-2 text-3xl font-bold tracking-tight">Fast ideas<span class="text-[#de5d3a]">.</span></p>
+            </div>
+            <div class="grid grid-cols-2 gap-3 text-sm">
+              <div class="rounded-xl bg-[#f5f4ef] p-4"><p class="text-[#18221d]/50">Runtime</p><p class="mt-1 font-bold">Node.js</p></div>
+              <div class="rounded-xl bg-[#f5f4ef] p-4"><p class="text-[#18221d]/50">Styling</p><p class="mt-1 font-bold">Tailwind</p></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="flex flex-col gap-2 border-t border-[#18221d]/15 py-5 text-xs text-[#18221d]/50 sm:flex-row sm:items-center sm:justify-between">
+        <span>Simple by design.</span>
+        <span>Ready on port 3000</span>
+      </footer>
+    </main>
+    <script>
+      const button = document.querySelector('#check-button');
+      const message = document.querySelector('#status-message');
+
+      button.addEventListener('click', async () => {
+        button.disabled = true;
+        message.textContent = 'Checking server...';
+        try {
+          const response = await fetch('/api/status');
+          const data = await response.json();
+          message.textContent = data.message;
+        } catch {
+          message.textContent = 'The server could not be reached.';
+        } finally {
+          button.disabled = false;
+        }
+      });
+    </script>
+  </body>
+</html>
